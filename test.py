@@ -1,20 +1,24 @@
-from sympy import symbols, Eq, sympify
+from sympy import symbols, Eq, sympify, expand
 
 # Step 1: Define symbols
-x_1, x_2, x_3 = symbols('x_1 x_2 x_3')
+v_1, v_2, v_3 = symbols('v_1 v_2 v_3')
 
 # Step 2: Hard-code the equation as a string
-hardcoded_equation = "x_1 + x_2 - 2 * x_3 = -x_1"
+# hardcoded_equation = "3 * v_1 + v_2 - 2 * v_3 = -v_1 - v_2"
+hardcoded_equation = "3 * (v_1 + v_2) = -3 * v_1 + -3 * v_1"
 
 # Step 3: Parse the hardcoded equation into a symbolic equation
 try:
     # Parse the equation as a single sympy expression
     full_equation = sympify(hardcoded_equation.replace('=', '-(') + ')')
 
-    # Simplify the full equation by combining terms and moving everything to one side
-    simplified_equation = full_equation.simplify()
+    # Apply distributive property to expand terms
+    expanded_equation = expand(full_equation)
 
-    # Reorganize terms in ascending order of variables (x_1, x_2, x_3)
+    # Simplify the expanded equation by combining terms and moving everything to one side
+    simplified_equation = expanded_equation.simplify()
+
+    # Reorganize terms in ascending order of variables (v_1, v_2, v_3)
     ordered_equation = simplified_equation.as_ordered_terms()
 
     # Combine the ordered terms back into a single expression
