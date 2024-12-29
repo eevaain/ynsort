@@ -1,14 +1,13 @@
 from sympy import symbols, Eq, sympify, expand, collect
 
-# Step 1: Define symbols (THESE WILL LATER BE MANUALLY INPUTTED THROUGH A ...
-# TEXTBOX (EXCEPT FOR THE V VALUES))
-v_1, v_2, v_3, v_4, Gy, Gs, Gz, IB = symbols('v_1 v_2 v_3 v_4 Gy Gs Gz IB')
+# Step 1: Define symbols
+v1, v2, v3, v4, Gy, Gs, Gz, IB = symbols('v1 v2 v3 v4 Gy Gs Gz IB')
 
 # Step 2: Hard-code the equation as a string (DO NOT REMOVE THESE COMMENTED TEST CASES)
-# hardcoded_equation = "0.25 * Gs * (v_3 - 0) + Gy * (v_1 - v_3) + Gz * (v_1 - v_4) = 4"
-# hardcoded_equation = "3 * v_1 + v_2 - 2 * v_3 = -v_1 - v_2"
-hardcoded_equation = "v_3 - 0 = 0.75*(v_4 - v_3) + IB"
-# hardcoded_equation = "-0.25 * Gs * (v_3 - 0) + Gy * (v_2 - v_3) = -4"
+# hardcoded_equation = "0.25 * Gs * (v3 - 0) + Gy * (v1 - v3) + Gz * (v1 - v4) = 4"
+# hardcoded_equation = "3 * v1 + v2 - 2 * v3 = -v1 - v2"
+hardcoded_equation = "v3 - 0 = 0.75*(v4 - v3) + IB"
+# hardcoded_equation = "-0.25 * Gs * (v3 - 0) + Gy * (v2 - v3) = -4"
 
 # Step 3: Parse the hardcoded equation into a symbolic equation
 try:
@@ -25,8 +24,8 @@ try:
     # Simplify the expanded equation by combining terms
     simplified_equation = equation.lhs - equation.rhs
 
-    # Collect terms by variables (v_1, v_2, v_3, v_4)
-    grouped_equation = collect(simplified_equation, [v_1, v_2, v_3, v_4])
+    # Collect terms by variables (v1, v2, v3, v4)
+    grouped_equation = collect(simplified_equation, [v1, v2, v3, v4])
 
     # Print the grouped and simplified equation
     print(f"Grouped Equation: {grouped_equation}")
