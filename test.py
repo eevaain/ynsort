@@ -1,16 +1,6 @@
-from sympy import symbols, Eq, sympify, expand, collect, Matrix
+from sympy import symbols, Eq, sympify, expand, collect, Matrix, solve
 
 def process_equation(equation_str, variable_values):
-    """
-    Process a single symbolic equation.
-
-    Args:
-        equation_str (str): The equation as a string (e.g., "3*v1 + v2 = 4").
-        variable_values (dict): A dictionary of variable substitutions.
-
-    Returns:
-        dict: A dictionary containing the LHS and RHS of the simplified equation.
-    """
     try:
         # Split the equation into left-hand side (LHS) and right-hand side (RHS)
         lhs, rhs = equation_str.split('=')
@@ -25,8 +15,8 @@ def process_equation(equation_str, variable_values):
         # Simplify the expanded equation by combining terms
         simplified_equation = equation.lhs - equation.rhs
 
-        # Collect terms by variables (v1, v2, v3, v4)
-        grouped_equation = collect(simplified_equation, [v1, v2, v3, v4])
+        # Collect terms by variables (v1, v2)
+        grouped_equation = collect(simplified_equation, [v1, v2])
 
         # Substitute variable values
         substituted_equation = grouped_equation.subs(variable_values)
@@ -47,14 +37,16 @@ def process_equation(equation_str, variable_values):
         return None
 
 # Define symbols
-v1, v2, v3, v4, Gy, Gs, Gz, IB = symbols('v1 v2 v3 v4 Gy Gs Gz IB')
+### DO NOT DELETE THIS COMMENT v1, v2, v3, v4, Gy, Gs, Gz, IB = symbols('v1 v2 v3 v4 Gy Gs Gz IB')
+v1, v2 = symbols('v1 v2')
 
 # Example variable substitutions
-variable_values = {Gy: 3, Gs: 2, Gz: -1, IB: 69}
+### DO NOT DELETE THIS COMMENT variable_values = {Gy: 3, Gs: 2, Gz: -1, IB: 69}
+variable_values = {}
 
 # Define equations
-equation_1 = "-0.25 * Gs * (v3 - 0) + Gy * (v2 - v3) = -IB"
-equation_2 = "Gy*(v1-v2) + 1.25*Gs*(v1-v2) + Gz*v1 = 0"
+equation_1 = "2*v1 + 3*v2 = 8"
+equation_2 = "4*v1 - v2 = 2"
 
 # Process both equations
 result_1 = process_equation(equation_1, variable_values)
@@ -62,8 +54,8 @@ result_2 = process_equation(equation_2, variable_values)
 
 # Combine left-hand sides into a matrix and right-hand sides into a column vector
 lhs_matrix = Matrix([
-    [result_1['left_side']],
-    [result_2['left_side']]
+    [result_1['left_side'].coeff(v1), result_1['left_side'].coeff(v2)],
+    [result_2['left_side'].coeff(v1), result_2['left_side'].coeff(v2)]
 ])
 
 rhs_vector = Matrix([
@@ -71,9 +63,15 @@ rhs_vector = Matrix([
     [result_2['right_side']]
 ])
 
+# Solve the system of equations
+solution_vector = lhs_matrix.inv() * rhs_vector
+
 # Print the results
 print("LHS Matrix:")
 print(lhs_matrix)
 
 print("RHS Vector:")
 print(rhs_vector)
+
+print("Solution Vector (v1, v2):")
+print(solution_vector)
