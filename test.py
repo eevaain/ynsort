@@ -47,35 +47,39 @@ def process_equation(equation_str, variable_values):
         return None
 
 # Define symbols
-v1, v3, v4 = symbols('v1 v3 v4')
+v1, v2, v3, v4, v5, v6 = symbols('v1 v2 v3 v4 v5 v6')
 
 # Define all variables in sorted order
-all_variables = sorted([v1, v3, v4], key=lambda x: x.name)
+all_variables = sorted([v1, v2, v3, v4, v5, v6], key=lambda x: x.name)
 
 # Example variable substitutions
 variable_values = {}
 
 # Define equations
-equation_1 = "2*v1 + v3 = 10"
-equation_2 = "3*v1 - 2*v3 + v4 = -5"
-equation_3 = "v3 + 4*v4 = 15"
+equation_1 = "4.5*v1 + 2.2*v2 = 0"
+equation_2 = "-1.8*v1 + 10*v2 - 6.2*v3 = -8"
+equation_3 = "0.75*v1 - 0.75*v2 - v3 + v6 = 0"
+equation_4 = "v6 = 7"
+equation_5 = "-4*v2 + 4.8*v4 = 0"
+equation_6 = "-1.5*v4 + 7.5*v5 - 7.5*v6 = 8"
 
 # Process all equations
-result_1 = process_equation(equation_1, variable_values)
-result_2 = process_equation(equation_2, variable_values)
-result_3 = process_equation(equation_3, variable_values)
+results = [
+    process_equation(equation_1, variable_values),
+    process_equation(equation_2, variable_values),
+    process_equation(equation_3, variable_values),
+    process_equation(equation_4, variable_values),
+    process_equation(equation_5, variable_values),
+    process_equation(equation_6, variable_values)
+]
 
 # Combine left-hand sides into a matrix and right-hand sides into a column vector
 lhs_matrix = Matrix([
-    [result_1['left_side'].coeff(var) for var in all_variables],
-    [result_2['left_side'].coeff(var) for var in all_variables],
-    [result_3['left_side'].coeff(var) for var in all_variables]
+    [result['left_side'].coeff(var) for var in all_variables] for result in results
 ])
 
 rhs_vector = Matrix([
-    [result_1['right_side']],
-    [result_2['right_side']],
-    [result_3['right_side']]
+    [result['right_side']] for result in results
 ])
 
 # Solve the system of equations
