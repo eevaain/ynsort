@@ -1,16 +1,6 @@
 from sympy import symbols, Eq, sympify, expand, collect, Matrix, solve
 
 def process_equation(equation_str, variable_values):
-    """
-    Process a single symbolic equation.
-
-    Args:
-        equation_str (str): The equation as a string (e.g., "3*v1 + v2 = 4").
-        variable_values (dict): A dictionary of variable substitutions.
-
-    Returns:
-        dict: A dictionary containing the LHS and RHS of the simplified equation.
-    """
     try:
         # Split the equation into left-hand side (LHS) and right-hand side (RHS)
         lhs, rhs = equation_str.split('=')
@@ -46,23 +36,27 @@ def process_equation(equation_str, variable_values):
         print("Error:", e)
         return None
 
-# Define symbols
-v1, v2, v3, v4, v5, v6 = symbols('v1 v2 v3 v4 v5 v6')
+# Define symbols (dynamically changes wrt to inputs given in frontend)
+v1, v2, v3, v4, v5, v6, IB = symbols('v1 v2 v3 v4 v5 v6 IB')
 
-# Define all variables in sorted order
+# Define all variables in sorted order (dynamically changes wrt to inputs given in frontend)
 all_variables = sorted([v1, v2, v3, v4, v5, v6], key=lambda x: x.name)
+## ^^ can refactor this line of code and get rid of line 40? do so
+## by scanning equations list and find highest value of v? or require user 
+## to manually type in the highest value (subscript) of v and the loop from i = 1 to i <= to highest subscript of v 
+## ...
 
-# Example variable substitutions
-variable_values = {}
+# Example variable substitutions (dynamically changes wrt to inputs given in frontend)
+variable_values = {IB: 8}
 
-# Define equations
+# Define equations (dynamically changes wrt to inputs given in frontend)
 equations = [
     "4.5*v1 + 2.2*v2 = 0",
-    "-1.8*v1 + 10*v2 - 6.2*v3 = -8",
+    "-1.8*v1 + 10*v2 - 6.2*v3 = -IB",
     "0.75*v1 - 0.75*v2 - v3 + v6 = 0",
     "v6 = 7",
     "-4*v2 + 4.8*v4 = 0",
-    "-1.5*v4 + 7.5*v5 - 7.5*v6 = 8"
+    "-1.5*v4 + 7.5*v5 - 7.5*v6 = IB"
 ]
 
 # Process all equations
