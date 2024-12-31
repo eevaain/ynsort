@@ -56,30 +56,25 @@ all_variables = sorted([v1, v2, v3, v4, v5, v6], key=lambda x: x.name)
 variable_values = {}
 
 # Define equations
-equation_1 = "4.5*v1 + 2.2*v2 = 0"
-equation_2 = "-1.8*v1 + 10*v2 - 6.2*v3 = -8"
-equation_3 = "0.75*v1 - 0.75*v2 - v3 + v6 = 0"
-equation_4 = "v6 = 7"
-equation_5 = "-4*v2 + 4.8*v4 = 0"
-equation_6 = "-1.5*v4 + 7.5*v5 - 7.5*v6 = 8"
+equations = [
+    "4.5*v1 + 2.2*v2 = 0",
+    "-1.8*v1 + 10*v2 - 6.2*v3 = -8",
+    "0.75*v1 - 0.75*v2 - v3 + v6 = 0",
+    "v6 = 7",
+    "-4*v2 + 4.8*v4 = 0",
+    "-1.5*v4 + 7.5*v5 - 7.5*v6 = 8"
+]
 
 # Process all equations
-results = [
-    process_equation(equation_1, variable_values),
-    process_equation(equation_2, variable_values),
-    process_equation(equation_3, variable_values),
-    process_equation(equation_4, variable_values),
-    process_equation(equation_5, variable_values),
-    process_equation(equation_6, variable_values)
-]
+equation_results = [process_equation(eq, variable_values) for eq in equations]
 
 # Combine left-hand sides into a matrix and right-hand sides into a column vector
 lhs_matrix = Matrix([
-    [result['left_side'].coeff(var) for var in all_variables] for result in results
+    [result['left_side'].coeff(var) for var in all_variables] for result in equation_results
 ])
 
 rhs_vector = Matrix([
-    [result['right_side']] for result in results
+    [result['right_side']] for result in equation_results
 ])
 
 # Solve the system of equations
