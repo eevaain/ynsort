@@ -37,26 +37,25 @@ def process_equation(equation_str, variable_values):
         return None
 
 # Define symbols (dynamically changes wrt to inputs given in frontend)
-v1, v2, v3, v4, v5, v6, IB = symbols('v1 v2 v3 v4 v5 v6 IB')
+# v1, v2, v3, v4, v5, v6, IB = symbols('v1 v2 v3 v4 v5 v6 IB')
+i1, i2, i3, i4, IA, Rw, Rx, Ry, Rz = symbols('i1 i2 i3 i4 IA Rw Rx Ry Rz')
 
 # Define all variables in sorted order (dynamically changes wrt to inputs given in frontend)
-all_variables = sorted([v1, v2, v3, v4, v5, v6], key=lambda x: x.name)
+all_variables = sorted([i1, i2, i3, i4], key=lambda x: x.name)
 ## ^^ can refactor this line of code and get rid of line 40? do so
 ## by scanning equations list and find highest value of v? or require user 
 ## to manually type in the highest value (subscript) of v and the loop from i = 1 to i <= to highest subscript of v 
 ## ...
 
 # Example variable substitutions (dynamically changes wrt to inputs given in frontend)
-variable_values = {IB: 8}
+variable_values = {IA: 6, Rw: 5.1, Rx: 1.5, Ry: 3.6, Rz: 1.1}
 
 # Define equations (dynamically changes wrt to inputs given in frontend)
 equations = [
-    "4.5*v1 + 2.2*v2 = 0",
-    "-1.8*v1 + 10*v2 - 6.2*v3 = -IB",
-    "0.75*v1 - 0.75*v2 - v3 + v6 = 0",
-    "v6 = 7",
-    "-4*v2 + 4.8*v4 = 0",
-    "-1.5*v4 + 7.5*v5 - 7.5*v6 = IB"
+    "Rx*(i4-i2) + Rx*iz = 0",
+    "IA = i1-i2",
+    "Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0",
+    "0 + Ry*(i3-i1) + Rz*i3 = 0"
 ]
 
 # Process all equations
