@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS 
+from flask_cors import CORS
 from sympy import symbols, Eq, sympify, expand, collect, Matrix
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "https://ynsort.com"])
+
+# Enable CORS for specific origins
+CORS(app, origins=["http://localhost:3000", "https://ynsort.com"], supports_credentials=True)
 
 def process_equation(equation_str, solution_variables, variable_values):
     try:
@@ -74,11 +76,22 @@ def solve_equations():
         return jsonify({
             "lhs_matrix": str(lhs_matrix),
             "rhs_vector": str(rhs_vector),
-            "solution_vector": str(solution_vector)
+            "solution_vector": {str(var): solution for var, solution in zip(solution_variables, solution_vector)}
         })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+@app.after_request
+def add_cors_headers(response):
+    """
+    Add additional CORS headers to handle OPTIONS preflight requests.
+    """
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
