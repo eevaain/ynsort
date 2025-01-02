@@ -5,7 +5,7 @@ from sympy import symbols, Eq, sympify, expand, collect, Matrix
 app = Flask(__name__)
 
 # Enable CORS for specific origins
-CORS(app, origins=["http://localhost:3000", "https://ynsort.com"], supports_credentials=True)
+CORS(app, origins=["http://localhost:3000", "https://ynsortfrontend.vercel.app"], supports_credentials=True)
 
 def process_equation(equation_str, solution_variables, variable_values):
     try:
