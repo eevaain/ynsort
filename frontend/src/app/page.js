@@ -78,7 +78,10 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-4 gap-4" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-4 gap-4"
+      style={{ fontFamily: "'Roboto Mono', monospace" }}
+    >
       <h1 className="text-2xl text-black pb-6">YNsort.com [IN BETA]</h1>
 
       {/* Solution Variables Input */}
@@ -108,7 +111,9 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
 
       {/* Equations Input (one equation per line) */}
       <div className="w-full max-w-md text-left">
-        <label className="block text-black mb-1">Equations (New line for each): </label>
+        <label className="block text-black mb-1">
+          Equations (New line for each):{" "}
+        </label>
         <textarea
           className="w-full p-2 border rounded h-24 text-black"
           value={equationsInput}
