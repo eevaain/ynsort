@@ -56,8 +56,8 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
       };
 
       // Update the fetch URL to the new backend endpoint
-      // const res = await fetch("https://ynsortbackend.onrender.com/solve", {
-      const res = await fetch("http://127.0.0.1:5000/solve", {
+      const res = await fetch("https://ynsortbackend.onrender.com/solve", {
+      // const res = await fetch("http://127.0.0.1:5000/solve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
