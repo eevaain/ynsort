@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import InfoPopup from "../components/InfoPopup"; // Adjust the path as necessary
 
 export default function Home() {
   const [solutionVarsInput, setSolutionVarsInput] = useState("i1, i2, i3, i4");
@@ -11,7 +12,7 @@ export default function Home() {
   "Ry": 3.6,
   "Rz": 1.1
 }`);
-  const [equationsInput, setEquationsInput] = useState(`Rx*(i4-i2) + Rx*iz = 0
+  const [equationsInput, setEquationsInput] = useState(`Rx*(i4-i2) + Rx*i3 = 0
 IA = i1 - i2
 Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
 0 + Ry*(i3-i1) + Rz*i3 = 0`);
@@ -26,13 +27,11 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
     setResponse(null);
 
     try {
-      // Parse solution_variables from comma-separated input
       const solution_variables = solutionVarsInput
         .split(",")
         .map((v) => v.trim())
         .filter(Boolean);
 
-      // Parse constant_variables from JSON input
       let constant_variables = {};
       try {
         constant_variables = JSON.parse(constantsInput);
@@ -42,8 +41,6 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
         );
       }
 
-      // Parse equations from multi-line input
-      // Each line represents one equation
       const equations = equationsInput
         .split("\n")
         .map((line) => line.trim())
@@ -55,7 +52,6 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
         equations,
       };
 
-      // Update the fetch URL to the new backend endpoint
       const res = await fetch("https://ynsortbackend.onrender.com/solve", {
         method: "POST",
         headers: {
@@ -82,12 +78,13 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
       className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-4 gap-4"
       style={{ fontFamily: "'Roboto Mono', monospace" }}
     >
-      <h1 className="text-2xl text-black pb-6">YNsort.com [IN BETA]</h1>
+      <h1 className="text-2xl text-black pb-6">Yₙsort.com [IN BETA]</h1>
 
       {/* Solution Variables Input */}
       <div className="w-full max-w-md text-left">
         <label className="block text-black mb-1">
-          Solution Variables (comma-separated):
+          Solution Variables (comma-separated):{" "}
+          <InfoPopup infoText="Enter variables separated by commas, e.g: i1, i2." />
         </label>
         <input
           className="w-full p-2 border rounded text-black"
@@ -100,7 +97,8 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
       {/* Constant Variables Input (JSON) */}
       <div className="w-full max-w-md text-left">
         <label className="block text-black mb-1">
-          Constant Variables (JSON):
+          Constant Variables (JSON):{" "}
+          <InfoPopup infoText="Provide constants as a valid JSON object." />
         </label>
         <textarea
           className="w-full p-2 border rounded h-24 text-black"
@@ -113,6 +111,7 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
       <div className="w-full max-w-md text-left">
         <label className="block text-black mb-1">
           Equations (New line for each):{" "}
+          <InfoPopup infoText="Enter equations, one per line, e.g: Rx*(i4-i2) + Rx*i3 = 0." />
         </label>
         <textarea
           className="w-full p-2 border rounded h-24 text-black"
@@ -146,7 +145,6 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
         </div>
       )}
 
-      {/* Footer */}
       <footer className="mt-8 text-center">
         <p className="text-sm text-gray-600">
           ⭐ If this was helpful,{" "}
