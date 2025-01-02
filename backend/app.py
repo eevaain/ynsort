@@ -3,7 +3,7 @@ from flask_cors import CORS
 from sympy import symbols, Eq, sympify, expand, collect, Matrix
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "https://ynsortfrontend.vercel.app"])
+CORS(app, origins=["http://localhost:3000", "https://ynsort.com"])
 
 def process_equation(equation_str, solution_variables, variable_values):
     try:
