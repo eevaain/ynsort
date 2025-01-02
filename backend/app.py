@@ -1,11 +1,9 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS 
 from sympy import symbols, Eq, sympify, expand, collect, Matrix
 
 app = Flask(__name__)
-
-# Enable CORS for specific origins
-CORS(app, origins=["http://localhost:3000", "https://ynsortfrontend.vercel.app"], supports_credentials=True)
+CORS(app, origins=["http://localhost:3000"])  # Allow requests from the React frontend
 
 def process_equation(equation_str, solution_variables, variable_values):
     try:
@@ -41,14 +39,6 @@ def process_equation(equation_str, solution_variables, variable_values):
 
     except Exception as e:
         return {"error": str(e)}
-    
-@app.route('/test', methods=['GET'])
-def test_route():
-    """
-    A simple test route to check if the server is running.
-    """
-    return "Hello, World!", 200
-
 
 @app.route('/solve', methods=['POST'])
 def solve_equations():
@@ -84,22 +74,11 @@ def solve_equations():
         return jsonify({
             "lhs_matrix": str(lhs_matrix),
             "rhs_vector": str(rhs_vector),
-            "solution_vector": {str(var): solution for var, solution in zip(solution_variables, solution_vector)}
+            "solution_vector": str(solution_vector)
         })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-@app.after_request
-def add_cors_headers(response):
-    origin = request.headers.get("Origin")
-    if origin in ["http://localhost:3000", "https://ynsortfrontend.vercel.app"]:
-        response.headers["Access-Control-Allow-Origin"] = origin
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response
-
 
 if __name__ == '__main__':
     app.run(debug=True)
