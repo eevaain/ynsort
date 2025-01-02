@@ -41,6 +41,14 @@ def process_equation(equation_str, solution_variables, variable_values):
 
     except Exception as e:
         return {"error": str(e)}
+    
+@app.route('/test', methods=['GET'])
+def test_route():
+    """
+    A simple test route to check if the server is running.
+    """
+    return "Hello, World!", 200
+
 
 @app.route('/solve', methods=['POST'])
 def solve_equations():
@@ -84,14 +92,14 @@ def solve_equations():
 
 @app.after_request
 def add_cors_headers(response):
-    """
-    Add additional CORS headers to handle OPTIONS preflight requests.
-    """
-    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
+    origin = request.headers.get("Origin")
+    if origin in ["http://localhost:3000", "https://ynsortfrontend.vercel.app"]:
+        response.headers["Access-Control-Allow-Origin"] = origin
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True)
