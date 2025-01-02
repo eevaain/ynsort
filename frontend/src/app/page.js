@@ -57,7 +57,6 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
 
       // Update the fetch URL to the new backend endpoint
       const res = await fetch("https://ynsortbackend.onrender.com/solve", {
-      // const res = await fetch("http://127.0.0.1:5000/solve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,6 +140,22 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
           <p>{error}</p>
         </div>
       )}
+
+      {/* Footer */}
+      <footer className="mt-8 text-center">
+        <p className="text-sm text-gray-600">
+          ⭐ If this was helpful,{" "}
+          <a
+            href="https://github.com/eevaain/ynsort/tree/main"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            star us on GitHub
+          </a>
+          !
+        </p>
+      </footer>
     </div>
   );
 }
