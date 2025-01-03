@@ -2,6 +2,8 @@
 
 YNsort is a tool designed to help solve systems of equations by taking user-defined variables, constants, and equations as inputs and returning the solution. The tool is designed to (hopefully) be intuitive and user-friendly.
 
+![YNsort Demo](./img/ynsort.gif)
+
 ## Features
 - Define **solution variables** for the system of equations.
 - Provide **constants** in JSON format for substitution.
@@ -27,5 +29,3 @@ The interface is available at [YNsort.com](https://www.ynsort.com).
    - LHS matrix.
    - RHS matrix.
    - Solution vector.
-
----
