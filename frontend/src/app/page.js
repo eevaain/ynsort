@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import InfoPopup from "../components/InfoPopup"; // Adjust the path as necessary
+import InfoPopup from "../components/InfoPopup"; 
+import { BlockMath } from "react-katex";
 
 export default function Home() {
   const [solutionVarsInput, setSolutionVarsInput] = useState("i1, i2, i3, i4");
@@ -131,10 +132,39 @@ Rw*i1 + Ry*(i1-i3) + Rx*(i2-i4) = 0
 
       {response && (
         <div className="mt-4 p-4 bg-white shadow-md rounded text-left w-full max-w-md">
-          <h2 className="font-bold mb-2 text-black">Response:</h2>
+          <h2 className=" mb-2 text-black">Response:</h2>
           <pre className="text-sm text-gray-800 whitespace-pre-wrap">
             {JSON.stringify(response, null, 2)}
           </pre>
+
+          {/* ONLY render the matrix if response.solution_vector exists */}
+          {response.solution_vector && (
+            <div style={{ margin: "2rem" }}>
+              <h1 className="text-md text-gray-800 whitespace-pre-wrap text-center pb-4">Solution Vector is:</h1>
+              {/* Render the solution matrix inline: parse & display as pmatrix */}
+              <BlockMath>
+                {String.raw`\color{black}{\begin{pmatrix}` +
+                  // Transform "Matrix([[0, 0],[0, 0]])" into "0 & 0\\ 0 & 0"
+                  response.solution_vector
+                    // Remove "Matrix([["
+                    .replace(/^Matrix\(\[\[/, "")
+                    // Remove the trailing "]])"
+                    .replace(/\]\]\)$/, "")
+                    // Split rows by "], ["
+                    .split("], [")
+                    // For each row, split by commas and join with "&"
+                    .map((row) =>
+                      row
+                        .split(",")
+                        .map((val) => val.trim())
+                        .join(" & ")
+                    )
+                    // Finally join rows with "\\" for LaTeX
+                    .join(" \\\\ ")
+                  + String.raw`\end{pmatrix}}`}
+              </BlockMath>
+            </div>
+          )}
         </div>
       )}
 
